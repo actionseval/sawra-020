@@ -1,0 +1,28 @@
+name: CI
+
+# on: [push, pull_request]
+on: [repository_dispatch, workflow_dispatch]
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Install dependencies
+        run: |
+          pip install pytest>=8.4.2
+          pip install pytest-cov>=6.0.0
+          pip install coverage[toml]>=7.6.0
+          pip install mypy>=1.13.0
+          pip install ruff>=0.14.4
+
+      - name: Run tests
+        run: |
+          uv run pytest --cov=mackup --cov-report=term

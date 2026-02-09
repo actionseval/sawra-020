@@ -1,0 +1,21 @@
+name: CI
+
+# on: [push, pull_request]
+on: [repository_dispatch, workflow_dispatch]
+
+jobs:
+  pytest:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+        python-version:
+          - '3.12'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: |
+          uv run pytest --cov=mackup --cov-report=term
