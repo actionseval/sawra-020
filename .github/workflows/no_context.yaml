@@ -1,0 +1,20 @@
+name: Pytest
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          apt install -y base-files bash coreutils e2fsprogs libacl1:amd64 libc-bin libc6:amd64 libcap2:amd64 libcom-err2:amd64 libext2fs2t64:amd64 libgcrypt20:amd64 libgpg-error0:amd64 liblz4-1:amd64 libnuma1:amd64 libproc2-0:amd64 libpython3.12-minimal:amd64 libpython3.12-stdlib:amd64 libsystemd0:amd64 libzstd1:amd64 locales ncurses-base openssl procps python3-minimal python3.12-minimal tzdata
+
+      - name: Run tests
+        run: |
+          uv run pytest --cov=mackup --cov-report=term
